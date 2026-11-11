@@ -1,5 +1,5 @@
 import game_framework
-from pico2d import load_image
+from pico2d import get_canvas_width, load_image
 
 
 class Bird:
@@ -33,6 +33,11 @@ class Bird:
             self.frame + self.FRAMES_PER_SECOND * game_framework.frame_time
         ) % len(self.frame_rects)
         self.x += self.direction * self.speed * game_framework.frame_time
+        canvas_width = get_canvas_width()
+        if self.x < -60:
+            self.x = canvas_width + 60
+        elif self.x > canvas_width + 60:
+            self.x = -60
 
     def draw(self):
         left, bottom, width, height = self.frame_rects[int(self.frame)]
