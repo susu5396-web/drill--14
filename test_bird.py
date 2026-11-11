@@ -1,9 +1,11 @@
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import DEFAULT, MagicMock, patch
 
 import game_framework
+import game_world
 from bird import Bird
 from bird_flock import BirdFlock
+import play_mode
 
 
 class BirdTests(unittest.TestCase):
@@ -54,6 +56,26 @@ class BirdTests(unittest.TestCase):
         self.assertEqual(
             len({bird.frame for bird in flock.birds}), 10
         )
+
+
+class PlayModeTests(unittest.TestCase):
+    def setUp(self):
+        game_world.clear()
+
+    def tearDown(self):
+        play_mode.finish()
+
+    def test_init_registers_bird_flock_with_existing_objects(self):
+        with patch.multiple(
+                play_mode, Boy=DEFAULT, BirdFlock=DEFAULT, Grass=DEFAULT
+        ) as objects:
+            play_mode.init()
+
+            self.assertIn(objects['Boy'].return_value, game_world.world[1])
+            self.assertIn(
+                objects['BirdFlock'].return_value, game_world.world[1]
+            )
+            self.assertIn(objects['Grass'].return_value, game_world.world[0])
 
 
 if __name__ == '__main__':
