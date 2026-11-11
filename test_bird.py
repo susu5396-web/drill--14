@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import game_framework
 from bird import Bird
@@ -30,6 +30,15 @@ class BirdTests(unittest.TestCase):
 
         self.assertEqual(bird.frame, 11)
         self.assertEqual(bird.x, -60)
+
+    @patch('bird.load_image')
+    def test_left_facing_bird_is_flipped_horizontally(self, load_image):
+        bird = Bird(100, 300, direction=-1)
+        bird.image = MagicMock()
+
+        bird.draw()
+
+        self.assertEqual(bird.image.clip_composite_draw.call_args.args[5], 'h')
 
     @patch('bird.load_image')
     @patch('bird_flock.get_canvas_width', return_value=1600)
