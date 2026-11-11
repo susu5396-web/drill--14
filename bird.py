@@ -1,7 +1,9 @@
+import game_framework
 from pico2d import load_image
 
 
 class Bird:
+    FRAMES_PER_SECOND = 12
     image = None
     image_width = 918
     image_height = 506
@@ -25,7 +27,9 @@ class Bird:
         self.frame = 0
 
     def update(self):
-        pass
+        self.frame = (
+            self.frame + self.FRAMES_PER_SECOND * game_framework.frame_time
+        ) % len(self.frame_rects)
 
     def draw(self):
         left, bottom, width, height = self.frame_rects[int(self.frame)]
