@@ -15,6 +15,9 @@ class BirdFlock:
             Bird(
                 margin + spacing * index,
                 self.HEIGHTS[index % len(self.HEIGHTS)],
+                direction=1 if index % 2 == 0 else -1,
+                speed=70 + (index % 4) * 12,
+                frame=index * len(Bird.frame_rects) // self.BIRD_COUNT,
             )
             for index in range(self.BIRD_COUNT)
         ]
