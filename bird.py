@@ -2,23 +2,26 @@ import game_framework
 from pico2d import get_canvas_width, load_image
 
 
+IMAGE_WIDTH = 918
+IMAGE_HEIGHT = 506
+FRAME_WIDTH = 185
+FRAME_HEIGHT = 169
+FRAME_RECTS = tuple(
+    (
+        column * 183,
+        IMAGE_HEIGHT - (row_top + FRAME_HEIGHT),
+        min(FRAME_WIDTH, IMAGE_WIDTH - column * 183),
+        FRAME_HEIGHT,
+    )
+    for row_top, frame_count in ((0, 5), (168, 5), (337, 4))
+    for column in range(frame_count)
+)
+
+
 class Bird:
     FRAMES_PER_SECOND = 12
     image = None
-    image_width = 918
-    image_height = 506
-    frame_width = 185
-    frame_height = 169
-    frame_rects = tuple(
-        (
-            column * 183,
-            image_height - (row_top + frame_height),
-            min(frame_width, image_width - column * 183),
-            frame_height,
-        )
-        for row_top, frame_count in ((0, 5), (168, 5), (337, 4))
-        for column in range(frame_count)
-    )
+    frame_rects = FRAME_RECTS
 
     def __init__(self, x, y, direction=1, speed=90, frame=0):
         if Bird.image is None:
